@@ -34,3 +34,15 @@ channel.basic_consume(
 print("Aguardando pagamentos...")
 
 channel.start_consuming()
+
+def receber_mensagem(ch, method, properties, body):
+    print("Processando mensagem...")
+
+    mensagem = json.loads(body)
+
+    print("Pagamento recebido:")
+    print(f"ID: {mensagem['pagamento_id']}")
+    print(f"Status: {mensagem['status']}")
+    print(f"Valor: R$ {mensagem['valor']:.2f}")
+
+    ch.basic_ack(delivery_tag=method.delivery_tag)
